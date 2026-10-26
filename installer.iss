@@ -14,7 +14,7 @@ OutputBaseFilename=Imag-to-Text-Setup-1.0.0
 Compression=lzma2
 SolidCompression=yes
 WizardStyle=modern
-UninstallDisplayIcon={app}\ImagToText.exe
+UninstallDisplayIcon={app}\runtime\pythonw.exe
 DisableProgramGroupPage=yes
 
 [Languages]
@@ -24,11 +24,11 @@ Name: "spanish"; MessagesFile: "compiler:Languages\Spanish.isl"
 Name: "desktopicon"; Description: "Crear acceso directo en el escritorio"; Flags: checkedonce
 
 [Files]
-Source: "dist\ImagToText\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "dist\ImagToText-Runtime\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 [Icons]
-Name: "{group}\Imag to Text"; Filename: "{app}\ImagToText.exe"
-Name: "{autodesktop}\Imag to Text"; Filename: "{app}\ImagToText.exe"; Tasks: desktopicon
+Name: "{group}\Imag to Text"; Filename: "{app}\runtime\pythonw.exe"; Parameters: """{app}\app.py"""; WorkingDir: "{app}"
+Name: "{autodesktop}\Imag to Text"; Filename: "{app}\runtime\pythonw.exe"; Parameters: """{app}\app.py"""; WorkingDir: "{app}"; Tasks: desktopicon
 
 [Run]
-Filename: "{app}\ImagToText.exe"; Description: "Abrir Imag to Text"; Flags: nowait postinstall skipifsilent
+Filename: "{app}\runtime\pythonw.exe"; Parameters: """{app}\app.py"""; Description: "Abrir Imag to Text"; Flags: nowait postinstall skipifsilent

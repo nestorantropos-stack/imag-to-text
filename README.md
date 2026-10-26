@@ -4,7 +4,7 @@ Aplicación de escritorio para Windows 10/11 de 64 bits: convierte imágenes y P
 
 ## Instalación y uso
 
-1. Ejecuta `Imag-to-Text-Setup-1.0.0.exe` desde la sección [Releases](https://github.com/nestorantropos-stack/imag-to-text/releases).
+1. Descarga `Imag-to-Text-1.0.0-Windows.zip` desde [Releases](https://github.com/nestorantropos-stack/imag-to-text/releases), extrae la carpeta completa y ejecuta `Install.cmd`. Instala por usuario con accesos directos, sin privilegios de administrador.
 2. Abre **Imag to Text** desde Inicio o el acceso directo del escritorio.
 3. Pulsa **Abrir archivos** y selecciona uno o varios PDF, PNG, JPG, TIFF, BMP o WEBP.
 4. Selecciona una página en la lista. Pulsa un recuadro del original para identificar el texto reconocido. Los recuadros ámbar indican confianza inferior al 80%; es una estimación del motor, no una garantía de precisión.
@@ -12,7 +12,7 @@ Aplicación de escritorio para Windows 10/11 de 64 bits: convierte imágenes y P
 6. **Exportar texto…** guarda todas las páginas como `.docx`, `.md` o `.txt`, incluyendo tus correcciones. Cambia el tipo de archivo en el diálogo de guardado.
 7. **Guardar proyecto** conserva las imágenes y correcciones en un archivo `.itxt`. **Abrir proyecto** permite retomarlas sin repetir OCR.
 
-El instalador incluye Python, el motor y los modelos. No requiere Python, Word, Tesseract, GPU, cuentas ni conexión a Internet para reconocer documentos. Se instala por usuario y se desinstala desde Configuración → Aplicaciones.
+El paquete incluye el intérprete oficial firmado de Python, el motor y los modelos. No requiere Python, Word, Tesseract, GPU, cuentas ni conexión a Internet para reconocer documentos. Se instala por usuario y se desinstala desde Configuración → Aplicaciones. No cambia políticas de seguridad de Windows. Si una política administrada bloquea la instalación, consulta con su administrador.
 
 ## Alcance
 
@@ -42,18 +42,20 @@ Pruebas:
 .\.venv\Scripts\python.exe smoke.py work/smoke
 ```
 
-`smoke.py` genera documentos sintéticos, bloquea las conexiones de red y comprueba OCR en PNG/PDF, acentos, páginas vacías, exportaciones y persistencia. El ejecutable también admite `ImagToText.exe --self-test <carpeta>`; escribe `report.json`.
+`smoke.py` genera documentos sintéticos, bloquea las conexiones de red y comprueba OCR en PNG/PDF, acentos, páginas vacías, exportaciones y persistencia. En la instalación puedes ejecutar `runtime\python.exe smoke.py <carpeta>`; escribe `report.json`.
 
 ## Crear el instalador
 
-Instala [Inno Setup 6](https://jrsoftware.org/isinfo.php) y ejecuta:
+Para generar el ZIP instalable, ejecuta:
 
 ```powershell
 .\.venv\Scripts\python.exe collect_licenses.py
-.\build.ps1 -Iscc 'C:\ruta\Inno Setup 6\ISCC.exe'
+.\.venv\Scripts\python.exe package_runtime.py
 ```
 
-El resultado queda en `dist/Imag-to-Text-Setup-1.0.0.exe`. La carpeta `dist/ImagToText` es la versión portátil completa. Debe distribuirse completa, incluyendo `_internal` y las licencias. Los binarios no están firmados digitalmente.
+El resultado queda en `dist/Imag-to-Text-1.0.0-Windows.zip`. Incluye el runtime oficial de Python 3.11 usado para construirlo; los archivos del programa son código Python legible. También puede usarse de forma portátil ejecutando `runtime\pythonw.exe app.py` dentro de la carpeta extraída.
+
+Opcionalmente, `build.ps1 -Iscc 'C:\ruta\Inno Setup 6\ISCC.exe'` genera un instalador EXE con [Inno Setup 6](https://jrsoftware.org/isinfo.php). Ese instalador no está firmado y puede ser bloqueado por políticas de Windows. El paquete ZIP evita depender de un ejecutable personalizado de PyInstaller; no altera ni desactiva controles del sistema.
 
 ## Arquitectura
 
